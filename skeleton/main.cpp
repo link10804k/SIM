@@ -107,14 +107,14 @@ void initPhysics(bool interactive)
 
 // Function to configure what happens in each step of physics
 // interactive: true if the game is rendering, false if it offline
-void stepPhysics(bool interactive, double t)
+void stepPhysics(bool interactive, double dt)
 {
 	PX_UNUSED(interactive);
 	
 	if (!gScene) return;
 
 	// Accumulate time and step the physics simulation in fixed timesteps
-	gPhysicsTimeAccumulator += t;
+	gPhysicsTimeAccumulator += dt;
 
 	// Step the physics simulation in fixed timesteps
 	// This loop allows for multiple physics steps if the accumulated time exceeds the fixed timestep
@@ -129,7 +129,7 @@ void stepPhysics(bool interactive, double t)
 
 		gPhysicsTimeAccumulator -= gFixedTimestep;
 	}
-	SceneManager::instance().update(t);
+	SceneManager::instance().update(dt);
 }
 
 

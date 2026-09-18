@@ -10,8 +10,9 @@
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="callbacks.cpp" />
-    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="utils\Vector3D.cpp" />
+    <ClCompile Include="scenes\Scene0.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -26,6 +27,8 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="EmptyScene.h" />
+    <ClInclude Include="utils\Vector3D.h" />
+    <ClInclude Include="scenes\Scene0.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
