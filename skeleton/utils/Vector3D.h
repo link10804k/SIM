@@ -65,9 +65,7 @@ public:
 		lv /= rv;
 		return lv;
 	}
-	inline operator physx::PxVec3() const {
-		return { x, y, z };
-	}
+	operator physx::PxVec3() const;
 };
 
 #endif
