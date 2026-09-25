@@ -26,5 +26,5 @@ Vector3D Vector3D::cross(const Vector3D& other) const {
 }
 
 Vector3D::operator physx::PxVec3() const {
-	return { x, y, z };
+	return physx::PxVec3( x, y, z );
 }

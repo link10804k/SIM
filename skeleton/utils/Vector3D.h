@@ -8,8 +8,7 @@ namespace physx {
 }
 
 
-class Vector3D {
-public:
+struct Vector3D {
 	float x, y, z;
 
 	// Constructores
@@ -53,6 +52,10 @@ public:
 	inline friend Vector3D operator*(Vector3D lv, const float& rv) {
 		lv *= rv;
 		return lv;
+	}
+	inline friend Vector3D operator*(const float& lv, Vector3D rv) {
+		rv *= lv;
+		return rv;
 	}
 	inline Vector3D& operator/=(float s) {
 		assert(s != 0, "Intento de división de un Vector3D entre 0");

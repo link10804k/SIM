@@ -1,19 +1,32 @@
 ﻿#include "Scene0.h"
+
 #include "../RenderUtils.hpp"
+#include "../utils/Vector3D.h"
+
+#include <iostream>
 
 Scene0::Scene0(std::string name) : Scene(std::move(name)) {}
 
-void Scene0::init() {
-    physx::PxShape* shape = CreateShape(physx::PxSphereGeometry(2.0f));
-    physx::PxTransform m_transform = physx::PxTransform(physx::PxVec3(0.0f, 10.0f, 0.0f));
+void Scene0::init() {    
+    Vector3D A(-8.0f, 1.0f, -8.0f);
+    Vector3D B(8.0f, 8.0f, 8.0f);
 
-    // Se registra el RenderItem exactamente como en la plantilla original
-    render_item_vector.push_back(new RenderItem(shape, &m_transform, Vector4(1.0f, 0.0f, 0.0f, 1.0f)));
-    RegisterRenderItem(render_item_vector.back());
+    float ti = 5;
+    float tf = -30;
+    int n = 200;
+
+    for (int i = 0; i < n; ++i) {
+        float t = ((tf / (n - 1)) * i) + ti;
+        Vector3 v = (A + t*(B - A));
+
+        RenderItem* r = new RenderItem(CreateShape(physx::PxSphereGeometry(1.0f)), new physx::PxTransform(v), Vector4(1, 1, 1, 1));
+        render_item_vector.push_back(r);
+    }
 }
 void Scene0::cleanup() {
     for (RenderItem* ri : render_item_vector) {
-        ri->release();
+        if (ri != nullptr)
+            ri->release();
     }
     render_item_vector.clear();
 }
