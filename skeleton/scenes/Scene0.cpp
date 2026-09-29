@@ -17,7 +17,7 @@ void Scene0::init() {
 
     for (int i = 0; i < n; ++i) {
         float t = ((tf / (n - 1)) * i) + ti;
-        Vector3 v = (A + t*(B - A));
+        Vector3D v = (A + t*(B - A));
 
         RenderItem* r = new RenderItem(CreateShape(physx::PxSphereGeometry(1.0f)), new physx::PxTransform(v), Vector4(1, 1, 1, 1));
         render_item_vector.push_back(r);

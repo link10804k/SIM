@@ -14,7 +14,7 @@ public:
     void cleanup() override;
     void update(double dt) override;
 private:
-    std::vector<Particle> particle_vector;
+    std::vector<Particle*> particle_vector;
 };
 
 #endif
