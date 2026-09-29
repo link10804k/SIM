@@ -264,9 +264,11 @@
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="objects\Particle.cpp" />
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
+    <ClCompile Include="scenes\Scene1.cpp" />
     <ClCompile Include="scenes\Scene0.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="utils\Vector3D.cpp" />
@@ -275,10 +277,12 @@
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="EmptyScene.h" />
+    <ClInclude Include="objects\Particle.h" />
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="scenes\Scene1.h" />
     <ClInclude Include="scenes\Scene0.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="utils\Vector3D.h" />
