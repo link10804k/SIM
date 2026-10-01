@@ -15,6 +15,7 @@ private:
 	Vector3D acc;
 	Vector3D vel;
 	physx::PxTransform pos;
+	Vector3D pos_ant; // Verlet
 	RenderItem* render_item;
 };
 

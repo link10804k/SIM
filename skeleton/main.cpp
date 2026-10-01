@@ -134,8 +134,10 @@ void stepPhysics(bool interactive, double dt)
 		gScene->fetchResults(true);
 
 		gPhysicsTimeAccumulator -= gFixedTimestep;
+
+		// TODO: Con meter esto aquí ya está bien?
+		SceneManager::instance().update(gFixedTimestep); // Antes era dt
 	}
-	SceneManager::instance().update(dt);
 }
 
 
