@@ -138,6 +138,7 @@ void stepPhysics(bool interactive, double dt)
 		// TODO: Con meter esto aquí ya está bien?
 		SceneManager::instance().update(gFixedTimestep); // Antes era dt
 	}
+
 }
 
 
