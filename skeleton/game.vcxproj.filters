@@ -33,6 +33,7 @@
     <ClInclude Include="scenes\Scene0.h" />
     <ClInclude Include="objects\Particle.h" />
     <ClInclude Include="scenes\Scene1.h" />
+    <ClInclude Include="utils\maths.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

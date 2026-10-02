@@ -6,17 +6,20 @@
 
 class Particle  {
 public:
-	Particle(Vector3D pos, Vector3D vel, Vector3D acc, float damp);
+	Particle(Vector3D pos, Vector3D vel, Vector3D acc, float damp, float mass);
 	~Particle();
 
 	void integrate(double dt);
 private:
-	float damp;
-	Vector3D acc;
-	Vector3D vel;
 	physx::PxTransform pos;
-	bool using_verlet = false; // Verlet
+	Vector3D vel;
+	Vector3D acc;
+	float damp;
+	float mass;
+
 	Vector3D pos_ant; // Verlet
+	bool using_verlet = false; // Verlet
+
 	RenderItem* render_item;
 };
 

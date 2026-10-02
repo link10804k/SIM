@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-Particle::Particle(Vector3D pos, Vector3D vel, Vector3D acc, float damp) : pos(pos), vel(vel), acc(acc), damp(damp) {
+Particle::Particle(Vector3D pos, Vector3D vel, Vector3D acc, float damp, float mass) : pos(pos), vel(vel), acc(acc), damp(damp) {
 	render_item = new RenderItem(CreateShape(physx::PxSphereGeometry(10.0f)), &this->pos, Vector4(1, 0, 0, 1));
 }
 Particle::~Particle() {
