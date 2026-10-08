@@ -4,12 +4,12 @@
 namespace maths {
 	template<typename T>
 	T lerp(T factor, T min, T max) {
-		min + factor * (max - min);
+		return min + factor * (max - min);
 	}
 
 	template<typename T>
 	T inverse_lerp(T value, T min, T max) {
-		(value - min) / (max - min);
+		return (value - min) / (max - min);
 	}
 
 	template<typename T>
