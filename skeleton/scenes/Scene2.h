@@ -13,7 +13,7 @@ public:
     void update(double dt) override;
     void keyPress(unsigned char key, const physx::PxTransform& cameraTransform) override;
 private:
-    //RenderItem* floor = nullptr;
+    RenderItem* floor = nullptr;
     Particle_system ps;
 };
 

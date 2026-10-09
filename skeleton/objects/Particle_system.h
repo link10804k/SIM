@@ -19,7 +19,7 @@ private:
 	physx::PxTransform pos;
 	Vector3 dir;
 
-	physx::PxShape* shape = CreateShape(physx::PxSphereGeometry(1.0f));
+	physx::PxShape* shape = CreateShape(physx::PxSphereGeometry(0.2f));
 	Vector4 color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
 
 	physx::PxTransform trans[MAX_PARTICLES];
