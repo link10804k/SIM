@@ -15,6 +15,8 @@
     <ClCompile Include="scenes\Scene0.cpp" />
     <ClCompile Include="objects\Particle.cpp" />
     <ClCompile Include="scenes\Scene1.cpp" />
+    <ClCompile Include="scenes\Scene2.cpp" />
+    <ClCompile Include="objects\Particle_system.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -34,6 +36,8 @@
     <ClInclude Include="objects\Particle.h" />
     <ClInclude Include="scenes\Scene1.h" />
     <ClInclude Include="utils\maths.h" />
+    <ClInclude Include="scenes\Scene2.h" />
+    <ClInclude Include="objects\Particle_system.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
