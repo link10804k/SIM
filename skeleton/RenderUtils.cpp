@@ -1,4 +1,4 @@
-#include <vector>
+﻿#include <vector>
 
 #include "PxPhysicsAPI.h"
 
@@ -95,7 +95,7 @@ void renderCallback()
 	stepPhysics(true, t);
 #endif
 
-	startRender(sCamera->getEye(), sCamera->getDir());
+	//startRender(sCamera->getEye(), sCamera->getDir());
 
 	//fprintf(stderr, "Num Render Items: %d\n", static_cast<int>(gRenderItems.size()));
 	for (auto it = gRenderItems.begin(); it != gRenderItems.end(); ++it)
@@ -124,7 +124,7 @@ void renderCallback()
 	//	renderActors(&actors[0], static_cast<PxU32>(actors.size()), true, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 	//}
 
-	finishRender();
+	//finishRender();
 }
 
 void exitCallback(void)

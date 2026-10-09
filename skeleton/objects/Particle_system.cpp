@@ -1,5 +1,7 @@
 ﻿#include "Particle_system.h"
 
+#include <cmath>
+
 Particle_system::Particle_system(physx::PxTransform pos, Vector3 dir) : pos(pos), dir(dir), n_particles(0) {
 	pos_dist = std::normal_distribution<float>(0.0f, 0.5f);
 	speed_dist = std::normal_distribution<float>(10.0f, 5.0f);
@@ -26,8 +28,11 @@ void Particle_system::create_particle() {
 void Particle_system::update(double dt) {
 	for (int i = 0; i < n_particles; ++i) {
 		// Integrador Euler Semi-implícito
-		vel[n_particles] = vel[n_particles] + (acc[n_particles] * dt);
-		trans[n_particles].p = (Vector3D)pos.p + (vel[n_particles] * dt);
+		vel[i] = vel[i] + (acc[i] * dt);
+		trans[i].p = (Vector3D)trans[i].p + (vel[i] * dt);
+
+		// Damping
+		vel[i] = vel[i] * std::pow(damp[i], dt);
 	}
 
 	int part_to_gen = (int)part_gen_dist(generator);
@@ -35,9 +40,11 @@ void Particle_system::update(double dt) {
 		create_particle();
 	}
 
+	startRender(GetCamera()->getEye(), GetCamera()->getDir());
 	for (int i = 0; i < n_particles; ++i) {
 		if (active[i]) {
-			renderShape(*shape, trans[n_particles], color);
+			renderShape(*shape, trans[i], color);
 		}
 	}
+	finishRender();
 }
