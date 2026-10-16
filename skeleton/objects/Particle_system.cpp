@@ -88,14 +88,16 @@ void Particle_system::update(double dt) {
 		}
 
 		// Integrador Euler Semi-implícito
-		vel[i] = vel[i] + (acc[i] * dt);
-		trans[i].p = (Vector3D)trans[i].p + (vel[i] * dt);
+		if (active[i]) {
+			vel[i] = vel[i] + (acc[i] * dt);
+			trans[i].p = (Vector3D)trans[i].p + (vel[i] * dt);
+		}
 
 		// Damping
 		vel[i] = vel[i] * std::pow(damp[i], dt);
 	}
 
-	int part_to_gen = (int)part_gen_dist(generator);
+	int part_to_gen = (int)std::roundf(part_gen_dist(generator));
 	for (int i = 0; i < part_to_gen; ++i) {
 		create_particle();
 	}
