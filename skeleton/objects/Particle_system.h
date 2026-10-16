@@ -6,7 +6,7 @@
 
 #include <random>
 
-constexpr int MAX_PARTICLES = 10000;
+constexpr int MAX_PARTICLES = 3000;
 
 class Particle_system {
 public:

@@ -13,36 +13,37 @@ Particle_system::Particle_system(physx::PxTransform pos, Vector3 dir, Particle_s
 		part_gen_dist = std::normal_distribution<float>(5, 1);
 
 		gravity = -9.8f;
+		break;
 	}
 	case FOG:
 	{
-		pos_normal_dist = std::normal_distribution<float>(0.0f, 4.0f);
-		speed_dist = std::normal_distribution<float>(10.0f, 1.0f);
+		pos_normal_dist = std::normal_distribution<float>(0.0f, 8.0f);
+		speed_dist = std::normal_distribution<float>(1.0f, 1.0f);
 		dir_uniform_dist = std::uniform_real_distribution<float>(-1.0f, 1.0f);
 		lifetime_dist = std::normal_distribution<float>(7.0f, 1.0f);
 
 		part_gen_dist = std::normal_distribution<float>(5, 1);
 
 		gravity = 0.0f;
+		break;
 	}
 	case BOX:
 	{
 		pos_uniform_dist = std::uniform_real_distribution<float>(-10.0f, 10.0f);
-		speed_dist = std::normal_distribution<float>(0.0f, FLT_MIN);
 		dir_uniform_dist = std::uniform_real_distribution<float>(-1.0f, 1.0f);
 		lifetime_dist = std::normal_distribution<float>(7.0f, 1.0f);
 
 		part_gen_dist = std::normal_distribution<float>(5, 1);
 
 		gravity = 0.0f;
+		break;
 	}
 	}
-	
 }
 
-#include <iostream>
-
 void Particle_system::create_particle() {
+	// Provisional
+	if (n_particles == MAX_PARTICLES) return;
 	int index;
 	if (n_particles == MAX_PARTICLES) {
 		index = 0;
@@ -51,14 +52,13 @@ void Particle_system::create_particle() {
 		index = n_particles;
 		++n_particles;
 	}
-	if (type == STREAM) trans[index] = physx::PxTransform(Vector3D(0.0f, 0.0f, 0.0f));
+	if (type == STREAM) trans[index] = physx::PxTransform(Vector3D(pos.p.x, pos.p.y, pos.p.z));
 	else if (type == FOG) trans[index] = physx::PxTransform(Vector3D(pos.p.x + pos_normal_dist(generator), pos.p.y + pos_normal_dist(generator), pos.p.z + pos_normal_dist(generator)));
 	else trans[index] = physx::PxTransform(Vector3D(pos.p.x + pos_uniform_dist(generator), pos.p.y + pos_uniform_dist(generator), pos.p.z + pos_uniform_dist(generator)));
 	
 	if (type == STREAM) vel[index] = Vector3D(dir.x + dir_normal_dist(generator), dir.y + dir_normal_dist(generator), dir.z + dir_normal_dist(generator)).normalize() * speed_dist(generator);
 	else if (type == FOG) {
 		vel[index] = std::move(Vector3D(dir_uniform_dist(generator), dir_uniform_dist(generator), dir_uniform_dist(generator)).normalize() * speed_dist(generator));
-		std::cout << vel[index].x << "/" << vel[index].y << "/" << vel[index].z << "\n";
 	}
 	else vel[index] = Vector3D(0.0f, 0.0f, 0.0f);
 

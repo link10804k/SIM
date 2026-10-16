@@ -14,7 +14,11 @@ public:
     void keyPress(unsigned char key, const physx::PxTransform& cameraTransform) override;
 private:
     RenderItem* floor = nullptr;
-    Particle_system ps;
+    Particle_system ps_stream;
+    Particle_system ps_fog;
+    Particle_system ps_box;
+
+    Particle_system* current_system = nullptr;
 };
 
 #endif
