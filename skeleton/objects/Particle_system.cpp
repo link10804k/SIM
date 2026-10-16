@@ -30,7 +30,7 @@ Particle_system::Particle_system(physx::PxTransform pos, Vector3 dir, Particle_s
 	case BOX:
 	{
 		pos_uniform_dist = std::uniform_real_distribution<float>(-10.0f, 10.0f);
-		dir_uniform_dist = std::uniform_real_distribution<float>(-1.0f, 1.0f);
+
 		lifetime_dist = std::normal_distribution<float>(7.0f, 1.0f);
 
 		part_gen_dist = std::normal_distribution<float>(5, 1);
