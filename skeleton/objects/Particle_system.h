@@ -10,14 +10,23 @@ constexpr int MAX_PARTICLES = 10000;
 
 class Particle_system {
 public:
+	enum Particle_system_type {
+		STREAM,
+		FOG,
+		BOX,
+		SIZE
+	};
+
 	Particle_system() = default;
-	Particle_system(physx::PxTransform pos, Vector3 dir);
+	Particle_system(physx::PxTransform pos, Vector3 dir, Particle_system_type type = STREAM);
 	~Particle_system() = default;
 
 	void update(double dt);
 private:
 	physx::PxTransform pos;
 	Vector3 dir;
+	float gravity;
+	Particle_system_type type;
 
 	physx::PxShape* shape = CreateShape(physx::PxSphereGeometry(0.2f));
 	Vector4 color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
@@ -33,9 +42,15 @@ private:
 	int n_particles;
 
 	std::default_random_engine generator;
-	std::normal_distribution<float> pos_dist;
+
+	std::normal_distribution<float> pos_normal_dist;
+	std::uniform_real_distribution<float> pos_uniform_dist;
+
 	std::normal_distribution<float> speed_dist;
-	std::normal_distribution<float> dir_dist;
+
+	std::normal_distribution<float> dir_normal_dist;
+	std::uniform_real_distribution<float> dir_uniform_dist;
+
 	std::normal_distribution<float> lifetime_dist;
 
 	std::normal_distribution<float> part_gen_dist;

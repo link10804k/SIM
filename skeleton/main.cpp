@@ -29,6 +29,12 @@
 #include <foundation/PxSimpleTypes.h>
 #include <PxPhysicsVersion.h> // <- Macros for PhysX version checking
 
+
+// CNG: Flag para usar todas las gpus del ordenador
+extern "C" {
+	_declspec(dllexport) DWORD NvOptimusEnablement = 1;
+}
+
 #define PVD_HOST "127.0.0.1" // IP localhost for PVD connection
 
 
