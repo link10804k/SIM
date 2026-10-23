@@ -27,7 +27,7 @@ private:
 	Vector3 dir;
 	float gravity;
 	Particle_system_type type;
-
+	
 	physx::PxShape* shape = CreateShape(physx::PxSphereGeometry(0.2f));
 	Vector4 color = Vector4(1.0f, 0.0f, 0.0f, 1.0f);
 
