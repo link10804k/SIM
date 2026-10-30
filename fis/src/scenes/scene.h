@@ -42,7 +42,7 @@ private:
     bool act[MAX_PARTICLES];
     Vector4_array col;
 
-    physx::PxShape* shape = CreateShape(physx::PxSphereGeometry(0.2f));
+    physx::PxShape* particle_shape = CreateShape(physx::PxSphereGeometry(0.2f));
 };
 
 #endif

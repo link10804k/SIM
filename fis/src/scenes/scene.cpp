@@ -10,7 +10,7 @@ void Scene::update(double dt) {
 }
 
 void Scene::render() {
-    physx::PxShape sh = *shape;
+    physx::PxShape sh = *particle_shape;
 
     startRender(GetCamera()->getEye(), GetCamera()->getDir());
     for (int i = 0; i < n_particles; ++i) {
