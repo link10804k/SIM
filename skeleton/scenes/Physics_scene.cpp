@@ -8,6 +8,10 @@ void Physics_scene::update(double dt) {
         if (lif[i] <= 0) act[i] = false;
     }
 
+    for (int i = 0; i < num_force_generators; ++i) {
+        force_generators[i].apply_force(*this);
+    }
+
     integrate(dt);
 
     render();

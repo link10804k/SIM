@@ -6,7 +6,7 @@
 class Scene3 : public Physics_scene {
 public:
 	using Physics_scene::Physics_scene;
-	using Physics_scene::~Physics_scene;
+	virtual ~Scene3() = default;
 
 	void init() override;
 	void cleanup() override;

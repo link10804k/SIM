@@ -19,6 +19,7 @@
     <ClCompile Include="objects\Particle_system.cpp" />
     <ClCompile Include="scenes\Physics_scene.cpp" />
     <ClCompile Include="scenes\Scene3.cpp" />
+    <ClCompile Include="objects\forces\Simple_gravity_generator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -42,6 +43,8 @@
     <ClInclude Include="objects\Particle_system.h" />
     <ClInclude Include="scenes\Physics_scene.h" />
     <ClInclude Include="scenes\Scene3.h" />
+    <ClInclude Include="objects\forces\Force_generator.h" />
+    <ClInclude Include="objects\forces\Simple_gravity_generator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

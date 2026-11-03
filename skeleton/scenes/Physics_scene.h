@@ -4,14 +4,19 @@
 #include "../Scene.h"
 #include "../RenderUtils.hpp"
 
+#include "../objects/forces/Force_generator.h"
+#include "../objects/forces/Simple_gravity_generator.h"
+
 class Physics_scene : public Scene {
+    friend class Simple_gravity_generator;
 public:
     using Scene::Scene;
-    using Scene::~Scene;
+    virtual ~Physics_scene() = default;
 
     virtual void update(double dt) override;
 
     void add_particle(Vector3 p, Vector3 v, float d, float m, float l, Vector4 c);
+    void add_force_generator();
 private:
     // Partículas
     static constexpr int MAX_PARTICLES = 2000;
@@ -45,13 +50,15 @@ private:
 
     physx::PxShape* particle_shape = CreateShape(physx::PxSphereGeometry(0.2f));
 
+    void integrate(double dt);
+
     // Generadores de fuerzas
     static constexpr int MAX_FORCE_GENERATORS = 10;
     int num_force_generators = 0;
+    Force_generator force_generators[MAX_FORCE_GENERATORS];
 
-    //
+    // Render
     void render();
-    void integrate(double dt);
 };
 
 #endif

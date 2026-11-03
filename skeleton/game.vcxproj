@@ -278,16 +278,19 @@
     <ClCompile Include="scenes\Scene1.cpp" />
     <ClCompile Include="scenes\Scene0.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="objects\forces\Simple_gravity_generator.cpp" />
     <ClCompile Include="utils\Vector3D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="EmptyScene.h" />
+    <ClInclude Include="objects\forces\Force_generator.h" />
     <ClInclude Include="objects\Particle_system.h" />
     <ClInclude Include="scenes\Scene3.h" />
     <ClInclude Include="scenes\Physics_scene.h" />
     <ClInclude Include="scenes\Scene2.h" />
+    <ClInclude Include="objects\forces\Simple_gravity_generator.h" />
     <ClInclude Include="utils\maths.h" />
     <ClInclude Include="objects\Particle.h" />
     <ClInclude Include="RenderUtils.hpp" />
