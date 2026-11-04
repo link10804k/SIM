@@ -1,15 +1,22 @@
 ﻿#include "Physics_scene.h"
 
 #include <cmath>
+#include <immintrin.h>
 
 void Physics_scene::update(double dt) {
     for (int i = 0; i < num_particles; ++i) {
+        // Kill expired particles
         lif[i] -= dt;
         if (lif[i] <= 0) act[i] = false;
-    }
 
+        // Clean acc accumulator
+        acc.x[i] = 0;
+        acc.y[i] = 0;
+        acc.z[i] = 0;
+    }
+    
     for (int i = 0; i < num_force_generators; ++i) {
-        force_generators[i].apply_force(*this);
+        force_generators[i]->apply_force(*this);
     }
 
     integrate(dt);
@@ -34,6 +41,11 @@ void Physics_scene::add_particle(Vector3 p, Vector3 v, float d, float m, float l
         tr.pos.x[num_particles] = p.x;
         tr.pos.y[num_particles] = p.y;
         tr.pos.z[num_particles] = p.z;
+
+        tr.qua.x[num_particles] = 0;
+        tr.qua.y[num_particles] = 0;
+        tr.qua.z[num_particles] = 0;
+        tr.qua.w[num_particles] = 1;
 
         vel.x[num_particles] = v.x;
         vel.y[num_particles] = v.y;
@@ -68,15 +80,26 @@ void Physics_scene::integrate(double dt) {
             vel.x[i] = vel.x[i] + (acc.x[i] * dt);
             vel.y[i] = vel.y[i] + (acc.y[i] * dt);
             vel.z[i] = vel.z[i] + (acc.z[i] * dt);
-
+            
             tr.pos.x[i] = tr.pos.x[i] + (vel.x[i] * dt);
             tr.pos.y[i] = tr.pos.y[i] + (vel.y[i] * dt);
             tr.pos.z[i] = tr.pos.z[i] + (vel.z[i] * dt);
-
+            
             // Damping
             vel.x[i] = vel.x[i] * std::pow(dam[i], dt);
             vel.y[i] = vel.y[i] * std::pow(dam[i], dt);
             vel.z[i] = vel.z[i] * std::pow(dam[i], dt);
+
+            // Load 8 vel values
+            //__m256 avx_vel_x = _mm256_loadu_ps(&vel.x[i]);
+            //__m256 avx_vel_y = _mm256_loadu_ps(&vel.y[i]);
+            //__m256 avx_vel_z = _mm256_loadu_ps(&vel.z[i]);
+            //
+            // Load 8 acc values
+            //__m256 avx_acc_x = _mm256_loadu_ps(&acc.x[i]);
+            //__m256 avx_acc_y = _mm256_loadu_ps(&acc.y[i]);
+            //__m256 avx_acc_z = _mm256_loadu_ps(&acc.z[i]);
         }
     }
 }
+

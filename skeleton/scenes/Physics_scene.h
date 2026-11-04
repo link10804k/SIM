@@ -7,6 +7,8 @@
 #include "../objects/forces/Force_generator.h"
 #include "../objects/forces/Simple_gravity_generator.h"
 
+#include <memory>
+
 class Physics_scene : public Scene {
     friend class Simple_gravity_generator;
 public:
@@ -16,10 +18,18 @@ public:
     virtual void update(double dt) override;
 
     void add_particle(Vector3 p, Vector3 v, float d, float m, float l, Vector4 c);
-    void add_force_generator();
+
+    template<typename T, typename ...Ts>
+        requires std::is_base_of_v<Force_generator, T>
+    inline void add_force_generator(Ts... args) {
+        if (num_force_generators < MAX_FORCE_GENERATORS) {
+            force_generators[num_force_generators] = std::make_unique<T>(T(std::forward<Ts>(args)...));
+            ++num_force_generators;
+        }
+    }
 private:
     // Partículas
-    static constexpr int MAX_PARTICLES = 2000;
+    static constexpr int MAX_PARTICLES = 2048;
     int num_particles = 0;
 
     struct Quaternion_array {
@@ -48,14 +58,14 @@ private:
     bool act[MAX_PARTICLES];
     Vector4_array col;
 
-    physx::PxShape* particle_shape = CreateShape(physx::PxSphereGeometry(0.2f));
+    physx::PxShape* particle_shape = CreateShape(physx::PxSphereGeometry(2.0f));
 
     void integrate(double dt);
 
     // Generadores de fuerzas
     static constexpr int MAX_FORCE_GENERATORS = 10;
     int num_force_generators = 0;
-    Force_generator force_generators[MAX_FORCE_GENERATORS];
+    std::unique_ptr<Force_generator> force_generators[MAX_FORCE_GENERATORS];
 
     // Render
     void render();
