@@ -5,10 +5,10 @@
 
 class Simple_gravity_generator : public Force_generator {
 public:
-	Simple_gravity_generator(float gravity_force = -9.8f);
+	Simple_gravity_generator(int force_generator_index, float gravity_force = -9.8f);
 	~Simple_gravity_generator() = default;
 
-	void apply_force(Physics_scene& scene) override;
+	void apply_force(Physics_scene& scene, double dt) override;
 private:
 	float gravity_force;
 };

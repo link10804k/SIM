@@ -20,6 +20,9 @@
     <ClCompile Include="scenes\Physics_scene.cpp" />
     <ClCompile Include="scenes\Scene3.cpp" />
     <ClCompile Include="objects\forces\Simple_gravity_generator.cpp" />
+    <ClCompile Include="objects\forces\Wind_generator.cpp" />
+    <ClCompile Include="objects\forces\Whirlwind_generator.cpp" />
+    <ClCompile Include="objects\forces\Explosion_generator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -45,6 +48,9 @@
     <ClInclude Include="scenes\Scene3.h" />
     <ClInclude Include="objects\forces\Force_generator.h" />
     <ClInclude Include="objects\forces\Simple_gravity_generator.h" />
+    <ClInclude Include="objects\forces\Wind_generator.h" />
+    <ClInclude Include="objects\forces\Whirlwind_generator.h" />
+    <ClInclude Include="objects\forces\Explosion_generator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
