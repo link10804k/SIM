@@ -109,13 +109,16 @@ void initPhysics(bool interactive)
 	// Registrar las prácticas/escenas del curso
 	//SceneManager::instance().registerScene<EmptyScene>("EscenaVacia");
 	//SceneManager::instance().registerScene<Scene0>("Scene0");
+	//SceneManager::instance().registerScene<Scene1>("Scene1");
+	//SceneManager::instance().registerScene<Scene2>("Scene2");
 	SceneManager::instance().registerScene<Scene3>("Scene3");
 	
 	// Cargar la escena inicial
 	//SceneManager::instance().changeScene("EscenaVacia");
 	//SceneManager::instance().changeScene("Scene0");
+	//SceneManager::instance().changeScene("Scene1");
+	//SceneManager::instance().changeScene("Scene2");
 	SceneManager::instance().changeScene("Scene3");
-	
 }
 
 
