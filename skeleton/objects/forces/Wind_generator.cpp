@@ -1,13 +1,13 @@
-#include "Wind_generator.h"
+﻿#include "Wind_generator.h"
 
 #include "../../scenes/Physics_scene.h"
 
-Wind_generator::Wind_generator(int force_generator_index, float k1, float k2, float pos_x, float pos_z, float action_radius_width, float action_radius_depth, Vector3D wind_velocity)
-	: Force_generator(force_generator_index), k1(k1), k2(k2), pos_x(pos_x), pos_z(pos_z), 
+Wind_generator::Wind_generator(Physics_scene& scene, int force_generator_index, float k1, float k2, float pos_x, float pos_z, float action_radius_width, float action_radius_depth, Vector3D wind_velocity)
+	: Force_generator(scene, force_generator_index), k1(k1), k2(k2), pos_x(pos_x), pos_z(pos_z), 
 	action_radius_width(action_radius_width), action_radius_depth(action_radius_depth),
 	wind_velocity(wind_velocity) {}
 
-void Wind_generator::apply_force(Physics_scene& scene, double dt) {
+void Wind_generator::apply_force(double dt) {
 	for (int i = 0; i < scene.num_particles; ++i) {
 		if (scene.act[i] && scene.subscribed_force_gens[i][force_generator_index] && 
 			scene.tr.pos.x[i] >= pos_x && scene.tr.pos.x[i] <= pos_x + action_radius_width &&

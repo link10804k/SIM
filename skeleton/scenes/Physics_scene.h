@@ -35,7 +35,7 @@ public:
         requires std::is_base_of_v<Force_generator, T>
     inline void add_force_generator(Ts... args) {
         if (num_force_generators < MAX_FORCE_GENERATORS) {
-            force_generators[num_force_generators] = std::make_unique<T>(T(num_force_generators, std::forward<Ts>(args)...));
+            force_generators[num_force_generators] = std::make_unique<T>(T(*this, num_force_generators, std::forward<Ts>(args)...));
             ++num_force_generators;
         }
     }

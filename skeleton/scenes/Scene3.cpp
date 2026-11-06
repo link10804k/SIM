@@ -4,7 +4,7 @@ void Scene3::init() {
 	// Crear generadores de fuerzas
 	add_force_generator<Simple_gravity_generator>(-20.0f);
 	add_force_generator<Wind_generator>(1, 0, -50, -50, 100, 100, Vector3D(-20, 0, 0));
-	add_force_generator<Whirlwind_generator>(1, 0, -50, -50, 100, 100, Vector3D(0, 0, 0));
+	add_force_generator<Whirlwind_generator>(1, 0, -50, -50, 100, 100);
 	add_force_generator<Explosion_generator>(Vector3D(0, 0, 0), 500, 100000, 0.5);
 
 	// Crear partículas

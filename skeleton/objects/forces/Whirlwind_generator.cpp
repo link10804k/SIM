@@ -1,8 +1,11 @@
-#include "Whirlwind_generator.h"
+﻿#include "Whirlwind_generator.h"
 
 #include "../../scenes/Physics_scene.h"
 
-void Whirlwind_generator::apply_force(Physics_scene& scene, double dt) {
+Whirlwind_generator::Whirlwind_generator(Physics_scene& scene, int force_generator_index, float k1, float k2, float pos_x, float pos_z, float action_radius_width, float action_radius_depth)
+	: Wind_generator(scene, force_generator_index, k1, k2, pos_x, pos_z, action_radius_width, action_radius_depth, Vector3D(0, 0, 0)) {}
+
+void Whirlwind_generator::apply_force(double dt) {
 	for (int i = 0; i < scene.num_particles; ++i) {
 		if (scene.act[i] && scene.subscribed_force_gens[i][force_generator_index] &&
 			scene.tr.pos.x[i] >= pos_x && scene.tr.pos.x[i] <= pos_x + action_radius_width &&

@@ -15,7 +15,7 @@ void Physics_scene::update(double dt) {
         lif[i] -= dt;
         if (lif[i] <= 0) act[i] = false;
 
-        // Clean acc accumulator
+        // Clean force accumulator
         forc.x[i] = 0;
         forc.y[i] = 0;
         forc.z[i] = 0;
@@ -23,7 +23,7 @@ void Physics_scene::update(double dt) {
     
     for (int i = 0; i < num_force_generators; ++i) {
         if (act_force_gens[i])
-            force_generators[i]->apply_force(*this, dt);
+            force_generators[i]->apply_force(dt);
     }
 
     integrate(dt);

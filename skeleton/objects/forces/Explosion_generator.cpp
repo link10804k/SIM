@@ -1,14 +1,14 @@
-#include "Explosion_generator.h"
+﻿#include "Explosion_generator.h"
 
 #include "../../scenes/Physics_scene.h"
 
 #include <cmath>
 #include <numbers>
 
-Explosion_generator::Explosion_generator(int force_generator_index, Vector3D position, float radius, float explosion_force, float time_constant)
-	: Force_generator(force_generator_index), position(position), radius(radius), explosion_force(explosion_force), time_constant(time_constant) {}
+Explosion_generator::Explosion_generator(Physics_scene& scene, int force_generator_index, Vector3D position, float radius, float explosion_force, float time_constant)
+	: Force_generator(scene, force_generator_index), position(position), radius(radius), explosion_force(explosion_force), time_constant(time_constant) {}
 
-void Explosion_generator::apply_force(Physics_scene& scene, double dt) {
+void Explosion_generator::apply_force(double dt) {
 	for (int i = 0; i < scene.num_particles; ++i) {
 		if (scene.act[i] && scene.subscribed_force_gens[i][force_generator_index]) {
 			Vector3D vec = Vector3D(scene.tr.pos.x[i], scene.tr.pos.y[i], scene.tr.pos.z[i]) - position;
