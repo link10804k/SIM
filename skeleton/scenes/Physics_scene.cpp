@@ -9,6 +9,8 @@ Physics_scene::Physics_scene(std::string name) : Scene(name) {
     memset(act_force_gens, false, sizeof(act_force_gens));
 }
 
+#include <iostream>
+
 void Physics_scene::update(double dt) {
     for (int i = 0; i < num_particles; ++i) {
         // Kill expired particles
@@ -21,10 +23,14 @@ void Physics_scene::update(double dt) {
         forc.z[i] = 0;
     }
     
+    size_t ini_time = glutGet(GLUT_ELAPSED_TIME);
     for (int i = 0; i < num_force_generators; ++i) {
         if (act_force_gens[i])
             force_generators[i]->apply_force(dt);
     }
+    size_t end_time = glutGet(GLUT_ELAPSED_TIME);
+    float time = (float)(end_time - ini_time);
+    printf("Tiempo de fuerzas: %f ms\n", time);
 
     integrate(dt);
 
@@ -43,7 +49,7 @@ void Physics_scene::render() {
 }
 
 void Physics_scene::add_particle(Vector3 p, Vector3 v, float d, float m, float l, Vector4 c, std::array<bool, MAX_FORCE_GENERATORS> force_gens_to_subscribe) {
-    if (num_particles != MAX_PARTICLES) {
+    if (num_particles < MAX_PARTICLES) {
         tr.pos.x[num_particles] = p.x;
         tr.pos.y[num_particles] = p.y;
         tr.pos.z[num_particles] = p.z;
