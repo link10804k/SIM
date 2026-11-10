@@ -3,8 +3,6 @@
 
 #include "Particle_system.h"
 
-#include <random>
-
 class Stream_particle_system : public Particle_system {
 public:
 	Stream_particle_system(Physics_scene& scene, Vector3D pos, Vector3D dir);

@@ -24,6 +24,7 @@
     <ClCompile Include="objects\forces\Whirlwind_generator.cpp" />
     <ClCompile Include="objects\forces\Explosion_generator.cpp" />
     <ClCompile Include="objects\particle_systems\Stream_particle_system.cpp" />
+    <ClCompile Include="objects\particle_systems\Fog_particle_system.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -53,6 +54,7 @@
     <ClInclude Include="objects\forces\Whirlwind_generator.h" />
     <ClInclude Include="objects\forces\Explosion_generator.h" />
     <ClInclude Include="objects\particle_systems\Stream_particle_system.h" />
+    <ClInclude Include="objects\particle_systems\Fog_particle_system.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
