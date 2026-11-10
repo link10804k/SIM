@@ -2,22 +2,15 @@
 
 #include "../../scenes/Physics_scene.h"
 
-Wind_generator::Wind_generator(Physics_scene& scene, int force_generator_index, float k1, float k2, float pos_x, float pos_z, float action_radius_width, float action_radius_depth, Vector3D wind_velocity)
-	: Force_generator(scene, force_generator_index), k1(k1), k2(k2), pos_x(pos_x), pos_z(pos_z), 
-	action_radius_width(action_radius_width), action_radius_depth(action_radius_depth),
-	wind_velocity(wind_velocity) {}
+Wind_generator::Wind_generator(Physics_scene& scene, float k1, float k2, Vector3D pos, float radius, Vector3D wind_velocity)
+	: Force_generator(scene), k1(k1), k2(k2), pos(pos), radius(radius), wind_velocity(wind_velocity) {}
 
-void Wind_generator::apply_force(double dt) {
-	for (int i = 0; i < scene.num_particles; ++i) {
-		if (scene.act[i] && scene.subscribed_force_gens[i][force_generator_index] && 
-			scene.tr.pos.x[i] >= pos_x && scene.tr.pos.x[i] <= pos_x + action_radius_width &&
-			scene.tr.pos.z[i] >= pos_z && scene.tr.pos.z[i] <= pos_z + action_radius_depth) {
-			
-			float relative_vel_mag = (wind_velocity - Vector3D(scene.vel.x[i], scene.vel.y[i], scene.vel.z[i])).magnitude();
+void Wind_generator::apply_force(double dt, int index) {
+	if ((pos - Vector3D(scene.tr.pos.x[index], scene.tr.pos.y[index], scene.tr.pos.z[index])).magnitude() <= radius) {
+		float relative_vel_mag = (wind_velocity - Vector3D(scene.vel.x[index], scene.vel.y[index], scene.vel.z[index])).magnitude();
 
-			scene.forc.x[i] += k1 * (wind_velocity.x - scene.vel.x[i]) + k2 * relative_vel_mag * (wind_velocity.x - scene.vel.x[i]);
-			scene.forc.y[i] += k1 * (wind_velocity.y - scene.vel.y[i]) + k2 * relative_vel_mag * (wind_velocity.y - scene.vel.y[i]);
-			scene.forc.z[i] += k1 * (wind_velocity.z - scene.vel.z[i]) + k2 * relative_vel_mag * (wind_velocity.z - scene.vel.z[i]);
-		}
+		scene.forc.x[index] += k1 * (wind_velocity.x - scene.vel.x[index]) + k2 * relative_vel_mag * (wind_velocity.x - scene.vel.x[index]);
+		scene.forc.y[index] += k1 * (wind_velocity.y - scene.vel.y[index]) + k2 * relative_vel_mag * (wind_velocity.y - scene.vel.y[index]);
+		scene.forc.z[index] += k1 * (wind_velocity.z - scene.vel.z[index]) + k2 * relative_vel_mag * (wind_velocity.z - scene.vel.z[index]);
 	}
 }

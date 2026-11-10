@@ -5,14 +5,13 @@ class Physics_scene;
 
 class Force_generator {
 public:
-	Force_generator(Physics_scene& scene, int force_generator_index) : scene(scene), force_generator_index(force_generator_index) {}
+	Force_generator(Physics_scene& scene) : scene(scene) {}
 	virtual ~Force_generator() = default;
-	virtual void apply_force(double dt) = 0;
+	virtual void apply_force(double dt, int index) = 0;
 
 	virtual void reset() {}
 protected:
 	Physics_scene& scene;
-	int force_generator_index;
 };
 
 #endif

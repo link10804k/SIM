@@ -2,21 +2,22 @@
 
 void Scene3::init() {
 	// Crear generadores de fuerzas
-	add_force_generator<Simple_gravity_generator>(-20.0f);
-	add_force_generator<Wind_generator>(1, 0, -50, -50, 100, 100, Vector3D(-20, 0, 0));
-	add_force_generator<Whirlwind_generator>(5, 0, -50, -50, 100, 100);
-	add_force_generator<Explosion_generator>(Vector3D(0, 0, 0), 500, 100000, 0.5);
+	add_force_generator<Simple_gravity_generator>(-40.0f);
+	add_force_generator<Wind_generator>(5, 0, Vector3D(-50, 0, -50), 100, Vector3D(-20, 0, 0));
+	add_force_generator<Whirlwind_generator>(5, 0, Vector3D(-25, 0, -25), 50);
+	add_force_generator<Explosion_generator>(Vector3D(0, 20, 0), 500, 5000, 0.5);
 
 	// Crear partículas
-	generate_particles();
+	//generate_particles();
+	add_particle_system<Stream_particle_system>(Vector3D(0, 0, 0), Vector3D(0, 1, 0));
 }
 
 void Scene3::cleanup() {
 
 }
 
-void Scene3::update(double dt) {
-	Physics_scene::update(dt);
+void Scene3::scene_update(double dt) {
+	
 }
 
 void Scene3::keyPress(unsigned char key, const physx::PxTransform& cameraTransform) {

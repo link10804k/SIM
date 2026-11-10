@@ -1,4 +1,6 @@
-﻿#include "Scene2.h"
+﻿/*
+
+#include "Scene2.h"
 
 Scene2::Scene2(std::string name) : Scene(std::move(name)) {}
 
@@ -31,3 +33,5 @@ void Scene2::keyPress(unsigned char key, const physx::PxTransform& cameraTransfo
 		break;
 	}
 }
+
+*/

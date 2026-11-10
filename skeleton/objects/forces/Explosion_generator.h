@@ -7,17 +7,17 @@
 
 class Explosion_generator : public Force_generator {
 public:
-	Explosion_generator(Physics_scene& scene, int force_generator_index, Vector3D position, float radius, float explosion_force, float time_constant);
+	Explosion_generator(Physics_scene& scene, Vector3D position, float radius, float explosion_force, float time_constant);
 	virtual ~Explosion_generator() = default;
 
-	void apply_force(double dt) override;
+	void apply_force(double dt, int index) override;
 	void reset() override;
 protected:
 	Vector3D position;
 	float radius;
 	float explosion_force;
 	float time_constant;
-	float current_time = 0;
+	float time_zero;
 };
 
 #endif

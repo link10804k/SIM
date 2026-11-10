@@ -3,7 +3,7 @@
 
 #include "../Scene.h"
 
-#include "../objects/Particle_system.h"
+//#include "../objects/Particle_system.h"
 
 class Scene2 : public Scene {
 public:
@@ -14,11 +14,11 @@ public:
     void keyPress(unsigned char key, const physx::PxTransform& cameraTransform) override;
 private:
     RenderItem* floor = nullptr;
-    Particle_system ps_stream;
-    Particle_system ps_fog;
-    Particle_system ps_box;
-
-    Particle_system* current_system = nullptr;
+    //Particle_system ps_stream;
+    //Particle_system ps_fog;
+    //Particle_system ps_box;
+    //
+    //Particle_system* current_system = nullptr;
 };
 
 #endif

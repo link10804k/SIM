@@ -5,10 +5,10 @@
 
 class Whirlwind_generator : public Wind_generator {
 public:
-	Whirlwind_generator(Physics_scene& scene, int force_generator_index, float k1, float k2, float pos_x, float pos_z, float action_radius_width, float action_radius_depth);
+	Whirlwind_generator(Physics_scene& scene, float k1, float k2, Vector3D pos, float radius);
 	virtual ~Whirlwind_generator() = default;
 
-	void apply_force(double dt) override;
+	void apply_force(double dt, int index) override;
 };
 
 #endif

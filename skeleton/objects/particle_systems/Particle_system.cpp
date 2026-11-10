@@ -1,4 +1,6 @@
-﻿#include "Particle_system.h"
+﻿/*
+
+#include "Particle_system.h"
 
 #include <cmath>
 
@@ -110,3 +112,5 @@ void Particle_system::update(double dt) {
 	}
 	finishRender();
 }
+
+*/

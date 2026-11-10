@@ -10,7 +10,7 @@ public:
 
 	void init() override;
 	void cleanup() override;
-	void update(double dt) override;
+	void scene_update(double dt) override;
 	void keyPress(unsigned char key, const physx::PxTransform& cameraTransform) override;
 private:
 	void generate_particles();

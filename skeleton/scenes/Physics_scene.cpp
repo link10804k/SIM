@@ -9,37 +9,52 @@ Physics_scene::Physics_scene(std::string name) : Scene(name) {
     memset(act_force_gens, false, sizeof(act_force_gens));
 }
 
-#include <iostream>
-
 void Physics_scene::update(double dt) {
-    for (int i = 0; i < num_particles; ++i) {
-        // Kill expired particles
-        lif[i] -= dt;
-        if (lif[i] <= 0) act[i] = false;
+    scene_update(dt);
 
-        // Clean force accumulator
-        forc.x[i] = 0;
-        forc.y[i] = 0;
-        forc.z[i] = 0;
+    int particles_removed = 0;
+    for (int i = 0; i < MAX_PARTICLES; ++i) {
+        if (act[i]) {
+            // Eliminar partículas expiradas
+            lif[i] -= dt;
+            if (lif[i] <= 0) {
+                act[i] = false;
+                ++particles_removed;
+                free_particle_index_stack.push(i);
+                continue;
+            }
+
+            // Limpiar acumulador de fuerzas
+            forc.x[i] = 0;
+            forc.y[i] = 0;
+            forc.z[i] = 0;
+
+            // Aplicar fuerzas
+            for (int j = 0; j < num_force_generators; ++j) {
+                if (act_force_gens[j] && subscribed_force_gens[i][j])
+                    force_generators[j]->apply_force(dt, i);
+            }
+
+            // Integrar
+            integrate(dt, i);
+        }
     }
-    
-    size_t ini_time = glutGet(GLUT_ELAPSED_TIME);
-    for (int i = 0; i < num_force_generators; ++i) {
-        if (act_force_gens[i])
-            force_generators[i]->apply_force(dt);
+    num_particles -= particles_removed;
+
+    // Sistemas de partículas
+    for (int i = 0; i < num_particle_systems; ++i) {
+        particle_systems[i]->update();
     }
-    size_t end_time = glutGet(GLUT_ELAPSED_TIME);
-    float time = (float)(end_time - ini_time);
-    printf("Tiempo de fuerzas: %f ms\n", time);
 
-    integrate(dt);
-
+    // Renderizar
     render();
+
+    //std::cout << "Particles: " << num_particles+particles_removed << "\nParticles removed: " << particles_removed << "\nParticles now: " << num_particles << "\n";
 }
 
 void Physics_scene::render() {
     startRender(GetCamera()->getEye(), GetCamera()->getDir());
-    for (int i = 0; i < num_particles; ++i) {
+    for (int i = 0; i < MAX_PARTICLES; ++i) {
         if (act[i]) {
             renderShape(*particle_shape, { {tr.pos.x[i], tr.pos.y[i], tr.pos.z[i]}, 
                 {tr.qua.x[i], tr.qua.y[i], tr.qua.z[i], tr.qua.w[i]} }, { col.x[i], col.y[i], col.z[i], col.w[i] });
@@ -49,47 +64,54 @@ void Physics_scene::render() {
 }
 
 void Physics_scene::add_particle(Vector3 p, Vector3 v, float d, float m, float l, Vector4 c, std::array<bool, MAX_FORCE_GENERATORS> force_gens_to_subscribe) {
-    if (num_particles < MAX_PARTICLES) {
-        tr.pos.x[num_particles] = p.x;
-        tr.pos.y[num_particles] = p.y;
-        tr.pos.z[num_particles] = p.z;
+    if (num_particles >= MAX_PARTICLES) return;
 
-        tr.qua.x[num_particles] = 0;
-        tr.qua.y[num_particles] = 0;
-        tr.qua.z[num_particles] = 0;
-        tr.qua.w[num_particles] = 1;
-
-        vel.x[num_particles] = v.x;
-        vel.y[num_particles] = v.y;
-        vel.z[num_particles] = v.z;
-
-        forc.x[num_particles] = 0.0f;
-        forc.y[num_particles] = 0.0f;
-        forc.z[num_particles] = 0.0f;
-
-        acc.x[num_particles] = 0.0f;
-        acc.y[num_particles] = 0.0f;
-        acc.z[num_particles] = 0.0f;
-
-        dam[num_particles] = d;
-
-        mas[num_particles] = m;
-        wmas[num_particles] = 1.0f / m;
-
-        lif[num_particles] = l;
-
-        act[num_particles] = true;
-
-        col.x[num_particles] = c.x;
-        col.y[num_particles] = c.y;
-        col.z[num_particles] = c.z;
-        col.w[num_particles] = c.w;
-
-        for (int i = 0; i < MAX_FORCE_GENERATORS; ++i)
-            subscribed_force_gens[num_particles][i] = force_gens_to_subscribe[i];
-
-        ++num_particles;
+    int index;
+    if (free_particle_index_stack.size() > 0) {
+        index = free_particle_index_stack.top();
+        free_particle_index_stack.pop();
     }
+    else index = num_particles;
+
+    tr.pos.x[index] = p.x;
+    tr.pos.y[index] = p.y;
+    tr.pos.z[index] = p.z;
+
+    tr.qua.x[index] = 0;
+    tr.qua.y[index] = 0;
+    tr.qua.z[index] = 0;
+    tr.qua.w[index] = 1;
+
+    vel.x[index] = v.x;
+    vel.y[index] = v.y;
+    vel.z[index] = v.z;
+
+    forc.x[index] = 0.0f;
+    forc.y[index] = 0.0f;
+    forc.z[index] = 0.0f;
+
+    acc.x[index] = 0.0f;
+    acc.y[index] = 0.0f;
+    acc.z[index] = 0.0f;
+
+    dam[index] = d;
+
+    mas[index] = m;
+    wmas[index] = 1.0f / m;
+
+    lif[index] = l;
+
+    act[index] = true;
+
+    col.x[index] = c.x;
+    col.y[index] = c.y;
+    col.z[index] = c.z;
+    col.w[index] = c.w;
+
+    for (int i = 0; i < MAX_FORCE_GENERATORS; ++i)
+        subscribed_force_gens[index][i] = force_gens_to_subscribe[i];
+
+    ++num_particles;
 }
 
 void Physics_scene::kill_all_particles() {
@@ -97,40 +119,36 @@ void Physics_scene::kill_all_particles() {
     num_particles = 0;
 }
 
-void Physics_scene::integrate(double dt) {
-    // TODO: usar simd
-    for (int i = 0; i < num_particles; ++i) { // TODO: Cambiar a i += 8 para el simd 
-        // Integrador Euler Semi-implícito
-        if (act[i]) {
-            // Aplicación de la fuerza acumulada
-            acc.x[i] = forc.x[i] * wmas[i];
-            acc.y[i] = forc.y[i] * wmas[i];
-            acc.z[i] = forc.z[i] * wmas[i];
+void Physics_scene::integrate(double dt, int index) {
+    // TODO: usar simd (con la representación actual complicado, quizás hacer if (index % 8 == 0))
+    // Integrador Euler Semi-implícito
+    // Aplicación de la fuerza acumulada
+    acc.x[index] = forc.x[index] * wmas[index];
+    acc.y[index] = forc.y[index] * wmas[index];
+    acc.z[index] = forc.z[index] * wmas[index];
 
-            vel.x[i] = vel.x[i] + (acc.x[i] * dt);
-            vel.y[i] = vel.y[i] + (acc.y[i] * dt);
-            vel.z[i] = vel.z[i] + (acc.z[i] * dt);
-            
-            tr.pos.x[i] = tr.pos.x[i] + (vel.x[i] * dt);
-            tr.pos.y[i] = tr.pos.y[i] + (vel.y[i] * dt);
-            tr.pos.z[i] = tr.pos.z[i] + (vel.z[i] * dt);
-            
-            // Damping
-            vel.x[i] = vel.x[i] * std::pow(dam[i], dt);
-            vel.y[i] = vel.y[i] * std::pow(dam[i], dt);
-            vel.z[i] = vel.z[i] * std::pow(dam[i], dt);
+    vel.x[index] = vel.x[index] + (acc.x[index] * dt);
+    vel.y[index] = vel.y[index] + (acc.y[index] * dt);
+    vel.z[index] = vel.z[index] + (acc.z[index] * dt);
+    
+    tr.pos.x[index] = tr.pos.x[index] + (vel.x[index] * dt);
+    tr.pos.y[index] = tr.pos.y[index] + (vel.y[index] * dt);
+    tr.pos.z[index] = tr.pos.z[index] + (vel.z[index] * dt);
+    
+    // Damping
+    vel.x[index] = vel.x[index] * std::pow(dam[index], dt);
+    vel.y[index] = vel.y[index] * std::pow(dam[index], dt);
+    vel.z[index] = vel.z[index] * std::pow(dam[index], dt);
 
-            // Cargar 8 valores de velocidad
-            //__m256 avx_vel_x = _mm256_loadu_ps(&vel.x[i]);
-            //__m256 avx_vel_y = _mm256_loadu_ps(&vel.y[i]);
-            //__m256 avx_vel_z = _mm256_loadu_ps(&vel.z[i]);
-            //
-            // Cargar 8 valores de aceleración
-            //__m256 avx_acc_x = _mm256_loadu_ps(&acc.x[i]);
-            //__m256 avx_acc_y = _mm256_loadu_ps(&acc.y[i]);
-            //__m256 avx_acc_z = _mm256_loadu_ps(&acc.z[i]);
-        }
-    }
+    // Cargar 8 valores de velocidad
+    //__m256 avx_vel_x = _mm256_loadu_ps(&vel.x[i]);
+    //__m256 avx_vel_y = _mm256_loadu_ps(&vel.y[i]);
+    //__m256 avx_vel_z = _mm256_loadu_ps(&vel.z[i]);
+    //
+    // Cargar 8 valores de aceleración
+    //__m256 avx_acc_x = _mm256_loadu_ps(&acc.x[i]);
+    //__m256 avx_acc_y = _mm256_loadu_ps(&acc.y[i]);
+    //__m256 avx_acc_z = _mm256_loadu_ps(&acc.z[i]);
 }
 
 void Physics_scene::set_active_force_generator(int index, bool active) {
