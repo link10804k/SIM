@@ -101,6 +101,8 @@
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <TargetMachine>MachineX64</TargetMachine>
+      <HeapReserveSize>1073741824</HeapReserveSize>
+      <HeapCommitSize>1073741824</HeapCommitSize>
     </Link>
     <ResourceCompile>
     </ResourceCompile>
@@ -130,10 +132,11 @@
       <AdditionalOptions>/MP /Wall /wd4514 /wd4820 /wd4127 /wd4710 /wd4711 /wd4435 /wd4577 /wd4464 /wd4350 /wd4668 /wd4365 /wd4548 /d2Zi+ </AdditionalOptions>
       <Optimization>Full</Optimization>
       <AdditionalIncludeDirectories>$(PHYSXPATH)/PhysX_3.4/Include;$(PHYSXPATH)/PxShared/include;$(PHYSXPATH)/PxShared/src/foundation/include;$(PHYSXPATH)/PxShared/src/fastxml/include;../common/Graphics/include/win32/GL;../common/PhysX-3.4/PhysX_3.4/Include;../common/PhysX-3.4/PxShared/include;../common/PhysX-3.4/PxShared/src/foundation/include;../common/PhysX-3.4/PxShared/src/fastxml/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_HAS_EXCEPTIONS=0;WIN32;WIN64;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;PHYSX_PROFILE_SDK;RENDER_SNIPPET;_DEBUG;NDEBUG;PX_CHECKED=1;PX_NVTX=1;PX_SUPPORT_PVD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_HAS_EXCEPTIONS=0;WIN32;WIN64;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;_WINSOCK_DEPRECATED_NO_WARNINGS;PHYSX_PROFILE_SDK;RENDER_SNIPPET;NDEBUG;PX_CHECKED=1;PX_NVTX=1;PX_SUPPORT_PVD=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <UndefinePreprocessorDefinitions>_DEBUG;%(UndefinePreprocessorDefinitions)</UndefinePreprocessorDefinitions>
       <ExceptionHandling>false</ExceptionHandling>
       <WarningLevel>Level4</WarningLevel>
-      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
@@ -152,6 +155,8 @@
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <TargetMachine>MachineX64</TargetMachine>
+      <HeapReserveSize>1073741824</HeapReserveSize>
+      <HeapCommitSize>1073741824</HeapCommitSize>
     </Link>
     <ResourceCompile>
     </ResourceCompile>
@@ -203,6 +208,8 @@
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <TargetMachine>MachineX64</TargetMachine>
+      <HeapReserveSize>1073741824</HeapReserveSize>
+      <HeapCommitSize>1073741824</HeapCommitSize>
     </Link>
     <ResourceCompile>
     </ResourceCompile>
@@ -254,6 +261,8 @@
       <ImportLibrary>$(OutDir)$(TargetName).lib</ImportLibrary>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <TargetMachine>MachineX64</TargetMachine>
+      <HeapReserveSize>1073741824</HeapReserveSize>
+      <HeapCommitSize>1073741824</HeapCommitSize>
     </Link>
     <ResourceCompile>
     </ResourceCompile>

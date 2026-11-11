@@ -1,0 +1,75 @@
+﻿  Vcpkg is unable to link because we cannot decide between Release and Debug libraries. Please define the property VcpkgConfiguration to be 'Release' or 'Debug' (currently 'checked').
+  main.cpp
+  ℹ️ Solo NDEBUG está definida.
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\packages\NVIDIA.PhysX.4.1.229882250\installed\x64-windows\include\task\PxTask.h(311,19): warning C5220: "physx::PxLightCpuTask::mRefCount": un miembro de datos no estático con un tipo calificado volátil ya no implica
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\packages\NVIDIA.PhysX.4.1.229882250\installed\x64-windows\include\task\PxTask.h(311,19): warning C5220:          que los constructores de copia/movimiento generados por el compilador y los operadores de asignación de copia o movimiento no sean triviales
+  (compilando archivo de origen "main.cpp")
+      C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\packages\NVIDIA.PhysX.4.1.229882250\installed\x64-windows\include\task\PxTask.h(311,19):
+      vea la declaración de 'physx::PxLightCpuTask::mRefCount'
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\Scene.h(29,72): warning C4100: 'cameraTransform': parámetro sin referencia
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\Scene.h(29,41): warning C4100: 'key': parámetro sin referencia
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\SceneManager.h(12,7): warning C4625: 'SceneManager': el constructor de copia se definió implícitamente como eliminado
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\SceneManager.h(12,7): warning C4626: 'SceneManager': el operador de asignaciones se definió implícitamente como eliminado
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\EmptyScene.h(20,24): warning C4100: 'dt': parámetro sin referencia
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\EmptyScene.h(25,64): warning C4100: 'camera': parámetro sin referencia
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\utils\Vector3D.h(11,8): warning C4099: 'Vector3D': nombre de tipo visto anteriormente usando 'class' ahora se ve usando 'struct'
+  (compilando archivo de origen "main.cpp")
+      C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\utils\Vector3D.h(11,8):
+      vea la declaración de 'Vector3D'
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\utils\Vector3D.h(61,3): warning C4002: hay demasiados argumentos para la invocación de macro "assert" de tipo función
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\objects\particle_systems\Particle_system.h(10,7): warning C4626: 'Particle_system': el operador de asignaciones se definió implícitamente como eliminado
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\objects\particle_systems\Stream_particle_system.h(6,7): warning C4626: 'Stream_particle_system': el operador de asignaciones se definió implícitamente como eliminado
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\objects\particle_systems\Fog_particle_system.h(6,7): warning C4626: 'Fog_particle_system': el operador de asignaciones se definió implícitamente como eliminado
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\objects\forces\Force_generator.h(6,7): warning C4626: 'Force_generator': el operador de asignaciones se definió implícitamente como eliminado
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\objects\forces\Simple_gravity_generator.h(6,7): warning C4626: 'Simple_gravity_generator': el operador de asignaciones se definió implícitamente como eliminado
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\objects\forces\Wind_generator.h(9,7): warning C4626: 'Wind_generator': el operador de asignaciones se definió implícitamente como eliminado
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\objects\forces\Whirlwind_generator.h(6,7): warning C4626: 'Whirlwind_generator': el operador de asignaciones se definió implícitamente como eliminado
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\objects\forces\Explosion_generator.h(8,7): warning C4626: 'Explosion_generator': el operador de asignaciones se definió implícitamente como eliminado
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\scenes\Physics_scene.h(20,7): warning C4625: 'Physics_scene': el constructor de copia se definió implícitamente como eliminado
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\scenes\Physics_scene.h(20,7): warning C4626: 'Physics_scene': el operador de asignaciones se definió implícitamente como eliminado
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\scenes\Scene3.h(6,7): warning C4623: 'Scene3': el constructor predeterminado se definió implícitamente como eliminado
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\scenes\Scene3.h(6,7): warning C4625: 'Scene3': el constructor de copia se definió implícitamente como eliminado
+  (compilando archivo de origen "main.cpp")
+  
+C:\Users\jzazo\OneDrive\Documents\GitHub\SIM\skeleton\scenes\Scene3.h(6,7): warning C4626: 'Scene3': el operador de asignaciones se definió implícitamente como eliminado
+  (compilando archivo de origen "main.cpp")
+  
+LINK : fatal error LNK1104: no se puede abrir el archivo 'PhysX3CommonCHECKED_x64.lib'

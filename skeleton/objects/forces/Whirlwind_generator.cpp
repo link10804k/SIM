@@ -10,7 +10,7 @@ void Whirlwind_generator::apply_force(double dt, int index) {
 		Vector3D whirlwind_velocity;
 
 		whirlwind_velocity.x = -(scene.tr.pos.z[index] - (pos.z + radius / 2));
-		whirlwind_velocity.y = 50 - (scene.tr.pos.y[index] - (pos.y));
+		whirlwind_velocity.y = radius - (scene.tr.pos.y[index] - (pos.y));
 		//whirlwind_velocity.y = 0;
 		whirlwind_velocity.z = scene.tr.pos.x[index] - (pos.x + radius / 2);
 		

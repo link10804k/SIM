@@ -6,6 +6,7 @@
 
 #include "../objects/particle_systems/Particle_system.h"
 #include "../objects/particle_systems/Stream_particle_system.h"
+#include "../objects/particle_systems/Fog_particle_system.h"
 
 #include "../objects/forces/Force_generator.h"
 #include "../objects/forces/Simple_gravity_generator.h"
@@ -23,9 +24,10 @@ class Physics_scene : public Scene {
     friend class Explosion_generator;
 
     friend class Stream_particle_generator;
+    friend class Fog_particle_generator;
 public:
     // Constantes
-    static constexpr int MAX_PARTICLES = 4096;
+    static constexpr int MAX_PARTICLES = 32768;
     static constexpr int MAX_PARTICLE_SYSTEMS = 10;
     static constexpr int MAX_FORCE_GENERATORS = 10;
 public:
@@ -132,9 +134,6 @@ private:
     int num_force_generators = 0;
     std::unique_ptr<Force_generator> force_generators[MAX_FORCE_GENERATORS];
     bool act_force_gens[MAX_FORCE_GENERATORS];
-
-    // Render
-    void render();
 };
 
 #endif

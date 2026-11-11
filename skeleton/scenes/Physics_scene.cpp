@@ -4,6 +4,23 @@
 #include <immintrin.h>
 #include <cassert>
 
+#define RENDER(count, positions, colors) startRender(GetCamera()->getEye(), GetCamera()->getDir());\
+                                        glEnable(GL_BLEND);\
+                                        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);\
+                                        glDisable(GL_LIGHTING);\
+                                        glPointSize(1.0f);\
+                                        glEnableClientState(GL_VERTEX_ARRAY);\
+                                        glVertexPointer(3, GL_FLOAT, 0, positions);\
+                                        glEnableClientState(GL_COLOR_ARRAY);\
+                                        glColorPointer(4, GL_FLOAT, 0, colors);\
+                                        glDrawArrays(GL_POINTS, 0, count);\
+                                        glDisableClientState(GL_COLOR_ARRAY);\
+                                        glDisableClientState(GL_VERTEX_ARRAY);\
+                                        glEnable(GL_LIGHTING);\
+                                        glDisable(GL_BLEND);\
+                                        finishRender();
+
+//#include <iostream>
 Physics_scene::Physics_scene(std::string name) : Scene(name) {
     memset(act, false, sizeof(act));
     memset(act_force_gens, false, sizeof(act_force_gens));
@@ -13,6 +30,16 @@ void Physics_scene::update(double dt) {
     scene_update(dt);
 
     int particles_removed = 0;
+
+    float positions[MAX_PARTICLES * 3];
+    float colors[MAX_PARTICLES * 4];
+    int count = 0;
+
+    // Sistemas de partículas
+    for (int i = 0; i < num_particle_systems; ++i) {
+        particle_systems[i]->update();
+    }
+
     for (int i = 0; i < MAX_PARTICLES; ++i) {
         if (act[i]) {
             // Eliminar partículas expiradas
@@ -37,30 +64,26 @@ void Physics_scene::update(double dt) {
 
             // Integrar
             integrate(dt, i);
+
+            // Insertar en array para el renderizado
+            positions[count * 3] = tr.pos.x[i];
+            positions[count * 3 + 1] = tr.pos.y[i];
+            positions[count * 3 + 2] = tr.pos.z[i];
+
+            colors[count * 4] = col.x[i];
+            colors[count * 4 + 1] = col.y[i];
+            colors[count * 4 + 2] = col.z[i];
+            colors[count * 4 + 3] = col.w[i];
+
+            ++count;
         }
     }
     num_particles -= particles_removed;
 
-    // Sistemas de partículas
-    for (int i = 0; i < num_particle_systems; ++i) {
-        particle_systems[i]->update();
-    }
-
-    // Renderizar
-    render();
+    // Renderizado
+    RENDER(count, positions, colors)
 
     //std::cout << "Particles: " << num_particles+particles_removed << "\nParticles removed: " << particles_removed << "\nParticles now: " << num_particles << "\n";
-}
-
-void Physics_scene::render() {
-    startRender(GetCamera()->getEye(), GetCamera()->getDir());
-    for (int i = 0; i < MAX_PARTICLES; ++i) {
-        if (act[i]) {
-            renderShape(*particle_shape, { {tr.pos.x[i], tr.pos.y[i], tr.pos.z[i]}, 
-                {tr.qua.x[i], tr.qua.y[i], tr.qua.z[i], tr.qua.w[i]} }, { col.x[i], col.y[i], col.z[i], col.w[i] });
-        }
-    }
-    finishRender();
 }
 
 void Physics_scene::add_particle(Vector3 p, Vector3 v, float d, float m, float l, Vector4 c, std::array<bool, MAX_FORCE_GENERATORS> force_gens_to_subscribe) {
