@@ -3,12 +3,13 @@
 #include <cmath>
 #include <immintrin.h>
 #include <cassert>
+#include "../utils/memory_allocator.h"
 
 #define RENDER(count, positions, colors) startRender(GetCamera()->getEye(), GetCamera()->getDir());\
                                         glEnable(GL_BLEND);\
                                         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);\
                                         glDisable(GL_LIGHTING);\
-                                        glPointSize(1.0f);\
+                                        glPointSize(2.0f);\
                                         glEnableClientState(GL_VERTEX_ARRAY);\
                                         glVertexPointer(3, GL_FLOAT, 0, positions);\
                                         glEnableClientState(GL_COLOR_ARRAY);\
@@ -20,19 +21,23 @@
                                         glDisable(GL_BLEND);\
                                         finishRender();
 
-//#include <iostream>
 Physics_scene::Physics_scene(std::string name) : Scene(name) {
-    memset(act, false, sizeof(act));
+    particles_struct = static_cast<Particles_struct*>(mem_alloc::heap_alloc(sizeof(Particles_struct)));
+    assert(particles_struct != nullptr);
+
+    //memset(particles_struct->act, false, sizeof(particles_struct->act));
     memset(act_force_gens, false, sizeof(act_force_gens));
+    memset(act_particle_sys, false, sizeof(act_particle_sys));
 }
 
+//#include <iostream>
 void Physics_scene::update(double dt) {
     scene_update(dt);
 
     int particles_removed = 0;
 
-    float positions[MAX_PARTICLES * 3];
-    float colors[MAX_PARTICLES * 4];
+    float* positions = (float*)mem_alloc::heap_alloc(sizeof(float) * 3 * MAX_PARTICLES); // [MAX_PARTICLES * 3];
+    float* colors = (float*)mem_alloc::heap_alloc(sizeof(float) * 4 * MAX_PARTICLES); // [MAX_PARTICLES * 4];
     int count = 0;
 
     // Sistemas de partículas
@@ -41,24 +46,24 @@ void Physics_scene::update(double dt) {
     }
 
     for (int i = 0; i < MAX_PARTICLES; ++i) {
-        if (act[i]) {
+        if (particles_struct->act[i]) {
             // Eliminar partículas expiradas
-            lif[i] -= dt;
-            if (lif[i] <= 0) {
-                act[i] = false;
+            particles_struct->lif[i] -= dt;
+            if (particles_struct->lif[i] <= 0) {
+                particles_struct->act[i] = false;
                 ++particles_removed;
-                free_particle_index_stack.push(i);
+                particles_struct->free_particle_index_stack.push(i);
                 continue;
             }
 
             // Limpiar acumulador de fuerzas
-            forc.x[i] = 0;
-            forc.y[i] = 0;
-            forc.z[i] = 0;
+            particles_struct->forc.x[i] = 0;
+            particles_struct->forc.y[i] = 0;
+            particles_struct->forc.z[i] = 0;
 
             // Aplicar fuerzas
             for (int j = 0; j < num_force_generators; ++j) {
-                if (act_force_gens[j] && subscribed_force_gens[i][j])
+                if (act_force_gens[j] && particles_struct->subscribed_force_gens[i][j])
                     force_generators[j]->apply_force(dt, i);
             }
 
@@ -66,14 +71,14 @@ void Physics_scene::update(double dt) {
             integrate(dt, i);
 
             // Insertar en array para el renderizado
-            positions[count * 3] = tr.pos.x[i];
-            positions[count * 3 + 1] = tr.pos.y[i];
-            positions[count * 3 + 2] = tr.pos.z[i];
+            positions[count * 3] = particles_struct->tr.pos.x[i];
+            positions[count * 3 + 1] = particles_struct->tr.pos.y[i];
+            positions[count * 3 + 2] = particles_struct->tr.pos.z[i];
 
-            colors[count * 4] = col.x[i];
-            colors[count * 4 + 1] = col.y[i];
-            colors[count * 4 + 2] = col.z[i];
-            colors[count * 4 + 3] = col.w[i];
+            colors[count * 4] = particles_struct->col.x[i];
+            colors[count * 4 + 1] = particles_struct->col.y[i];
+            colors[count * 4 + 2] = particles_struct->col.z[i];
+            colors[count * 4 + 3] = particles_struct->col.w[i];
 
             ++count;
         }
@@ -83,6 +88,7 @@ void Physics_scene::update(double dt) {
     // Renderizado
     RENDER(count, positions, colors)
 
+    //std::cout << "Num Particles: " << num_particles << "\n";
     //std::cout << "Particles: " << num_particles+particles_removed << "\nParticles removed: " << particles_removed << "\nParticles now: " << num_particles << "\n";
 }
 
@@ -90,55 +96,55 @@ void Physics_scene::add_particle(Vector3 p, Vector3 v, float d, float m, float l
     if (num_particles >= MAX_PARTICLES) return;
 
     int index;
-    if (free_particle_index_stack.size() > 0) {
-        index = free_particle_index_stack.top();
-        free_particle_index_stack.pop();
+    if (particles_struct->free_particle_index_stack.size() > 0) {
+        index = particles_struct->free_particle_index_stack.top();
+        particles_struct->free_particle_index_stack.pop();
     }
     else index = num_particles;
 
-    tr.pos.x[index] = p.x;
-    tr.pos.y[index] = p.y;
-    tr.pos.z[index] = p.z;
+    particles_struct->tr.pos.x[index] = p.x;
+    particles_struct->tr.pos.y[index] = p.y;
+    particles_struct->tr.pos.z[index] = p.z;
 
-    tr.qua.x[index] = 0;
-    tr.qua.y[index] = 0;
-    tr.qua.z[index] = 0;
-    tr.qua.w[index] = 1;
+    particles_struct->tr.qua.x[index] = 0;
+    particles_struct->tr.qua.y[index] = 0;
+    particles_struct->tr.qua.z[index] = 0;
+    particles_struct->tr.qua.w[index] = 1;
 
-    vel.x[index] = v.x;
-    vel.y[index] = v.y;
-    vel.z[index] = v.z;
+    particles_struct->vel.x[index] = v.x;
+    particles_struct->vel.y[index] = v.y;
+    particles_struct->vel.z[index] = v.z;
 
-    forc.x[index] = 0.0f;
-    forc.y[index] = 0.0f;
-    forc.z[index] = 0.0f;
+    particles_struct->forc.x[index] = 0.0f;
+    particles_struct->forc.y[index] = 0.0f;
+    particles_struct->forc.z[index] = 0.0f;
 
-    acc.x[index] = 0.0f;
-    acc.y[index] = 0.0f;
-    acc.z[index] = 0.0f;
+    particles_struct->acc.x[index] = 0.0f;
+    particles_struct->acc.y[index] = 0.0f;
+    particles_struct->acc.z[index] = 0.0f;
 
-    dam[index] = d;
+    particles_struct->dam[index] = d;
 
-    mas[index] = m;
-    wmas[index] = 1.0f / m;
+    particles_struct->mas[index] = m;
+    particles_struct->wmas[index] = 1.0f / m;
 
-    lif[index] = l;
+    particles_struct->lif[index] = l;
 
-    act[index] = true;
+    particles_struct->act[index] = true;
 
-    col.x[index] = c.x;
-    col.y[index] = c.y;
-    col.z[index] = c.z;
-    col.w[index] = c.w;
+    particles_struct->col.x[index] = c.x;
+    particles_struct->col.y[index] = c.y;
+    particles_struct->col.z[index] = c.z;
+    particles_struct->col.w[index] = c.w;
 
     for (int i = 0; i < MAX_FORCE_GENERATORS; ++i)
-        subscribed_force_gens[index][i] = force_gens_to_subscribe[i];
+        particles_struct->subscribed_force_gens[index][i] = force_gens_to_subscribe[i];
 
     ++num_particles;
 }
 
 void Physics_scene::kill_all_particles() {
-    memset(act, false, sizeof(act));
+    memset(particles_struct->act, false, sizeof(particles_struct->act));
     num_particles = 0;
 }
 
@@ -146,22 +152,22 @@ void Physics_scene::integrate(double dt, int index) {
     // TODO: usar simd (con la representación actual complicado, quizás hacer if (index % 8 == 0))
     // Integrador Euler Semi-implícito
     // Aplicación de la fuerza acumulada
-    acc.x[index] = forc.x[index] * wmas[index];
-    acc.y[index] = forc.y[index] * wmas[index];
-    acc.z[index] = forc.z[index] * wmas[index];
+    particles_struct->acc.x[index] = particles_struct->forc.x[index] * particles_struct->wmas[index];
+    particles_struct->acc.y[index] = particles_struct->forc.y[index] * particles_struct->wmas[index];
+    particles_struct->acc.z[index] = particles_struct->forc.z[index] * particles_struct->wmas[index];
 
-    vel.x[index] = vel.x[index] + (acc.x[index] * dt);
-    vel.y[index] = vel.y[index] + (acc.y[index] * dt);
-    vel.z[index] = vel.z[index] + (acc.z[index] * dt);
+    particles_struct->vel.x[index] = particles_struct->vel.x[index] + (particles_struct->acc.x[index] * dt);
+    particles_struct->vel.y[index] = particles_struct->vel.y[index] + (particles_struct->acc.y[index] * dt);
+    particles_struct->vel.z[index] = particles_struct->vel.z[index] + (particles_struct->acc.z[index] * dt);
     
-    tr.pos.x[index] = tr.pos.x[index] + (vel.x[index] * dt);
-    tr.pos.y[index] = tr.pos.y[index] + (vel.y[index] * dt);
-    tr.pos.z[index] = tr.pos.z[index] + (vel.z[index] * dt);
+    particles_struct->tr.pos.x[index] = particles_struct->tr.pos.x[index] + (particles_struct->vel.x[index] * dt);
+    particles_struct->tr.pos.y[index] = particles_struct->tr.pos.y[index] + (particles_struct->vel.y[index] * dt);
+    particles_struct->tr.pos.z[index] = particles_struct->tr.pos.z[index] + (particles_struct->vel.z[index] * dt);
     
     // Damping
-    vel.x[index] = vel.x[index] * std::pow(dam[index], dt);
-    vel.y[index] = vel.y[index] * std::pow(dam[index], dt);
-    vel.z[index] = vel.z[index] * std::pow(dam[index], dt);
+    particles_struct->vel.x[index] = particles_struct->vel.x[index] * std::pow(particles_struct->dam[index], dt);
+    particles_struct->vel.y[index] = particles_struct->vel.y[index] * std::pow(particles_struct->dam[index], dt);
+    particles_struct->vel.z[index] = particles_struct->vel.z[index] * std::pow(particles_struct->dam[index], dt);
 
     // Cargar 8 valores de velocidad
     //__m256 avx_vel_x = _mm256_loadu_ps(&vel.x[i]);

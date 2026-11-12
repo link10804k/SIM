@@ -55,6 +55,7 @@
     <ClInclude Include="objects\forces\Explosion_generator.h" />
     <ClInclude Include="objects\particle_systems\Stream_particle_system.h" />
     <ClInclude Include="objects\particle_systems\Fog_particle_system.h" />
+    <ClInclude Include="utils\memory_allocator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

@@ -5,11 +5,11 @@ void Scene3::init() {
 	add_force_generator<Simple_gravity_generator>(-50.0f);
 	add_force_generator<Wind_generator>(5, 0, Vector3D(-50, 0, 0), 100, Vector3D(-20, 0, 0));
 	add_force_generator<Whirlwind_generator>(50, 0, Vector3D(-50, -50, -50), 100);
-	add_force_generator<Explosion_generator>(Vector3D(0, 20, 0), 500, 5000, 0.5);
+	add_force_generator<Explosion_generator>(Vector3D(0, 20, 0), 500, 50000, 0.5);
 
 	// Crear partículas
 	//generate_particles();
-	//add_particle_system<Stream_particle_system>(Vector3D(0, 0, 0), Vector3D(0, 1, 0
+	//add_particle_system<Stream_particle_system>(Vector3D(0, 0, 0), Vector3D(0, 1, 0));
 	add_particle_system<Fog_particle_system>(Vector3D(0, 0, 0));
 }
 

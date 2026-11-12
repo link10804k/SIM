@@ -317,6 +317,7 @@
     <ClInclude Include="scenes\Scene1.h" />
     <ClInclude Include="scenes\Scene0.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="utils\memory_allocator.h" />
     <ClInclude Include="utils\Vector3D.h" />
     <ClInclude Include="objects\forces\Wind_generator.h" />
     <ClInclude Include="objects\forces\Whirlwind_generator.h" />

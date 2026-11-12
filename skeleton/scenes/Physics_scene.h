@@ -27,7 +27,7 @@ class Physics_scene : public Scene {
     friend class Fog_particle_generator;
 public:
     // Constantes
-    static constexpr int MAX_PARTICLES = 32768;
+    static constexpr int MAX_PARTICLES = 4096 * 16;
     static constexpr int MAX_PARTICLE_SYSTEMS = 10;
     static constexpr int MAX_FORCE_GENERATORS = 10;
 public:
@@ -90,7 +90,7 @@ private:
             }
             return fin - ini;
         }
-    } free_particle_index_stack;
+    };
 
     struct Quaternion_array {
         float x[MAX_PARTICLES], y[MAX_PARTICLES], z[MAX_PARTICLES], w[MAX_PARTICLES];
@@ -109,17 +109,22 @@ private:
         Vector3_array pos;
     };
 
-    Transform_array tr;
-    Vector3_array vel;
-    Vector3_array forc;
-    Vector3_array acc;
-    float dam[MAX_PARTICLES];
-    float mas[MAX_PARTICLES];
-    float wmas[MAX_PARTICLES];
-    float lif[MAX_PARTICLES];
-    bool act[MAX_PARTICLES];
-    Vector4_array col;
-    bool subscribed_force_gens[MAX_PARTICLES][MAX_FORCE_GENERATORS];
+    struct Particles_struct {
+        Transform_array tr;
+        Vector3_array vel;
+        Vector3_array forc;
+        Vector3_array acc;
+        float dam[MAX_PARTICLES];
+        float mas[MAX_PARTICLES];
+        float wmas[MAX_PARTICLES];
+        float lif[MAX_PARTICLES];
+        bool act[MAX_PARTICLES];
+        Vector4_array col;
+        bool subscribed_force_gens[MAX_PARTICLES][MAX_FORCE_GENERATORS];
+
+        Index_stack free_particle_index_stack;
+    };
+    Particles_struct* particles_struct = nullptr;
 
     physx::PxShape* particle_shape = CreateShape(physx::PxSphereGeometry(0.2f));
 
