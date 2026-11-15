@@ -9,7 +9,7 @@
                                         glEnable(GL_BLEND);\
                                         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);\
                                         glDisable(GL_LIGHTING);\
-                                        glPointSize(2.0f);\
+                                        glPointSize(1.0f);\
                                         glEnableClientState(GL_VERTEX_ARRAY);\
                                         glVertexPointer(3, GL_FLOAT, 0, positions);\
                                         glEnableClientState(GL_COLOR_ARRAY);\
@@ -23,21 +23,25 @@
 
 Physics_scene::Physics_scene(std::string name) : Scene(name) {
     particles_struct = static_cast<Particles_struct*>(mem_alloc::heap_alloc(sizeof(Particles_struct)));
-    assert(particles_struct != nullptr);
+    assert(particles_struct);
+    positions = (float*)mem_alloc::heap_alloc(sizeof(float) * 3 * MAX_PARTICLES); // [MAX_PARTICLES * 3];
+    assert(positions);
+    colors = (float*)mem_alloc::heap_alloc(sizeof(float) * 4 * MAX_PARTICLES); // [MAX_PARTICLES * 4];
+    assert(colors);
 
     //memset(particles_struct->act, false, sizeof(particles_struct->act));
     memset(act_force_gens, false, sizeof(act_force_gens));
     memset(act_particle_sys, false, sizeof(act_particle_sys));
 }
 
-//#include <iostream>
+#include <iostream>
 void Physics_scene::update(double dt) {
     scene_update(dt);
 
     int particles_removed = 0;
 
-    float* positions = (float*)mem_alloc::heap_alloc(sizeof(float) * 3 * MAX_PARTICLES); // [MAX_PARTICLES * 3];
-    float* colors = (float*)mem_alloc::heap_alloc(sizeof(float) * 4 * MAX_PARTICLES); // [MAX_PARTICLES * 4];
+    memset(positions, 0, sizeof(positions));
+    memset(colors, 0, sizeof(colors));
     int count = 0;
 
     // Sistemas de partículas
@@ -88,7 +92,7 @@ void Physics_scene::update(double dt) {
     // Renderizado
     RENDER(count, positions, colors)
 
-    //std::cout << "Num Particles: " << num_particles << "\n";
+    std::cout << "Num Particles: " << num_particles << "\n";
     //std::cout << "Particles: " << num_particles+particles_removed << "\nParticles removed: " << particles_removed << "\nParticles now: " << num_particles << "\n";
 }
 

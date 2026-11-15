@@ -18,6 +18,6 @@ void Fog_particle_system::update() {
 	for (int i = 0; i < particles_to_gen; ++i) {
 		scene.add_particle(pos + Vector3(pos_dist(generator), pos_dist(generator), pos_dist(generator)), 
 		std::clamp(speed_dist(generator), 0.0f, FLT_MAX) * Vector3D(dir_dist(generator), dir_dist(generator), dir_dist(generator)).normalize(), 0.98f,
-		std::clamp(mass_dist(generator), 0.0f, FLT_MAX), std::clamp(life_dist(generator), 0.0f, FLT_MAX), Vector4(1, 0, 0, 1), { true, true, true, true });
+		std::clamp(mass_dist(generator), 0.0f, FLT_MAX), std::clamp(life_dist(generator), 0.0f, FLT_MAX), Vector4(1, 0, 0, 0.2f), { true, true, true, true });
 	}
 }

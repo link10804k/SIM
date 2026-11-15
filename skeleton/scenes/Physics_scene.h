@@ -27,7 +27,7 @@ class Physics_scene : public Scene {
     friend class Fog_particle_generator;
 public:
     // Constantes
-    static constexpr int MAX_PARTICLES = 4096 * 16;
+    static constexpr int MAX_PARTICLES = 4096 * 16 * 8;
     static constexpr int MAX_PARTICLE_SYSTEMS = 10;
     static constexpr int MAX_FORCE_GENERATORS = 10;
 public:
@@ -139,6 +139,10 @@ private:
     int num_force_generators = 0;
     std::unique_ptr<Force_generator> force_generators[MAX_FORCE_GENERATORS];
     bool act_force_gens[MAX_FORCE_GENERATORS];
+
+    // Render
+    float* positions;
+    float* colors;
 };
 
 #endif
