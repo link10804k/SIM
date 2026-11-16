@@ -29,9 +29,15 @@ Physics_scene::Physics_scene(std::string name) : Scene(name) {
     colors = (float*)mem_alloc::heap_alloc(sizeof(float) * 4 * MAX_PARTICLES); // [MAX_PARTICLES * 4];
     assert(colors);
 
-    //memset(particles_struct->act, false, sizeof(particles_struct->act));
+    memset(particles_struct->act, false, sizeof(particles_struct->act));
     memset(act_force_gens, false, sizeof(act_force_gens));
     memset(act_particle_sys, false, sizeof(act_particle_sys));
+}
+
+Physics_scene::~Physics_scene() {
+    mem_alloc::heap_free(particles_struct);
+    mem_alloc::heap_free(positions);
+    mem_alloc::heap_free(colors);
 }
 
 #include <iostream>

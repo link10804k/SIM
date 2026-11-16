@@ -32,7 +32,7 @@ public:
     static constexpr int MAX_FORCE_GENERATORS = 10;
 public:
     Physics_scene(std::string name);
-    virtual ~Physics_scene() = default;
+    virtual ~Physics_scene();
 
     void update(double dt) final override;
 
