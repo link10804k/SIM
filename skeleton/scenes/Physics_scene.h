@@ -72,6 +72,10 @@ private:
         int ini = 0;
         int fin = 0;
     public:
+        void reset() {
+            ini = 0;
+            fin = 0;
+        }
         void push(int index) {
             circular_stack[fin] = index;
             fin = (fin + 1) % MAX_PARTICLES;
@@ -124,7 +128,7 @@ private:
 
         Index_stack free_particle_index_stack;
     };
-    Particles_struct* particles_struct = nullptr;
+    std::unique_ptr<Particles_struct> particles_struct;
 
     physx::PxShape* particle_shape = CreateShape(physx::PxSphereGeometry(0.2f));
 
@@ -141,6 +145,8 @@ private:
     bool act_force_gens[MAX_FORCE_GENERATORS];
 
     // Render
+    void render(int count);
+
     float* positions;
     float* colors;
 };

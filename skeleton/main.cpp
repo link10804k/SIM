@@ -213,11 +213,12 @@ void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 
 
 int main(int, const char*const*)
-{
+	{
 #ifndef NDEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
 	_CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDERR);
+	//_CrtSetBreakAlloc(192);
 #endif
 
 #ifndef OFFLINE_EXECUTION 

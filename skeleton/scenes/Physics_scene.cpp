@@ -3,31 +3,11 @@
 #include <cmath>
 #include <immintrin.h>
 #include <cassert>
-#include "../utils/memory_allocator.h"
-
-#define RENDER(count, positions, colors) startRender(GetCamera()->getEye(), GetCamera()->getDir());\
-                                        glEnable(GL_BLEND);\
-                                        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);\
-                                        glDisable(GL_LIGHTING);\
-                                        glPointSize(1.0f);\
-                                        glEnableClientState(GL_VERTEX_ARRAY);\
-                                        glVertexPointer(3, GL_FLOAT, 0, positions);\
-                                        glEnableClientState(GL_COLOR_ARRAY);\
-                                        glColorPointer(4, GL_FLOAT, 0, colors);\
-                                        glDrawArrays(GL_POINTS, 0, count);\
-                                        glDisableClientState(GL_COLOR_ARRAY);\
-                                        glDisableClientState(GL_VERTEX_ARRAY);\
-                                        glEnable(GL_LIGHTING);\
-                                        glDisable(GL_BLEND);\
-                                        finishRender();
 
 Physics_scene::Physics_scene(std::string name) : Scene(name) {
-    particles_struct = static_cast<Particles_struct*>(mem_alloc::heap_alloc(sizeof(Particles_struct)));
-    assert(particles_struct);
-    positions = (float*)mem_alloc::heap_alloc(sizeof(float) * 3 * MAX_PARTICLES); // [MAX_PARTICLES * 3];
-    assert(positions);
-    colors = (float*)mem_alloc::heap_alloc(sizeof(float) * 4 * MAX_PARTICLES); // [MAX_PARTICLES * 4];
-    assert(colors);
+    particles_struct = std::make_unique<Particles_struct>();
+    positions = new float[3 * MAX_PARTICLES];
+    colors = new float[4 * MAX_PARTICLES];
 
     memset(particles_struct->act, false, sizeof(particles_struct->act));
     memset(act_force_gens, false, sizeof(act_force_gens));
@@ -35,9 +15,8 @@ Physics_scene::Physics_scene(std::string name) : Scene(name) {
 }
 
 Physics_scene::~Physics_scene() {
-    mem_alloc::heap_free(particles_struct);
-    mem_alloc::heap_free(positions);
-    mem_alloc::heap_free(colors);
+    delete[] positions;
+    delete[] colors;
 }
 
 #include <iostream>
@@ -96,7 +75,7 @@ void Physics_scene::update(double dt) {
     num_particles -= particles_removed;
 
     // Renderizado
-    RENDER(count, positions, colors)
+    render(count);
 
     std::cout << "Num Particles: " << num_particles << "\n";
     //std::cout << "Particles: " << num_particles+particles_removed << "\nParticles removed: " << particles_removed << "\nParticles now: " << num_particles << "\n";
@@ -203,4 +182,22 @@ void Physics_scene::toggle_active_force_generator(int index) {
 void Physics_scene::reset_force_generator(int index) {
     assert(index >= 0 && index < MAX_FORCE_GENERATORS);
     force_generators[index]->reset();
+}
+
+void Physics_scene::render(int count) {
+    startRender(GetCamera()->getEye(), GetCamera()->getDir());\
+    glEnable(GL_BLEND);\
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);\
+    glDisable(GL_LIGHTING);\
+    glPointSize(1.0f);\
+    glEnableClientState(GL_VERTEX_ARRAY);\
+    glVertexPointer(3, GL_FLOAT, 0, positions);\
+    glEnableClientState(GL_COLOR_ARRAY);\
+    glColorPointer(4, GL_FLOAT, 0, colors);\
+    glDrawArrays(GL_POINTS, 0, count);\
+    glDisableClientState(GL_COLOR_ARRAY);\
+    glDisableClientState(GL_VERTEX_ARRAY);\
+    glEnable(GL_LIGHTING);\
+    glDisable(GL_BLEND);\
+    finishRender();
 }

@@ -10,7 +10,7 @@ Fog_particle_system::Fog_particle_system(Physics_scene& scene, Vector3D pos)
 	speed_dist = std::normal_distribution<float>(1.0f, 0.5f);
 	dir_dist = std::uniform_real_distribution<float>(-1.0f, 1.0f);
 	life_dist = std::normal_distribution<float>(10.0f, 1.0f);
-	part_gen_dist = std::normal_distribution<float>(500, 1);
+	part_gen_dist = std::normal_distribution<float>(100, 1);
 }
 
 void Fog_particle_system::update() {

@@ -26,7 +26,6 @@ void Scene3::keyPress(unsigned char key, const physx::PxTransform& cameraTransfo
 	case 'r':
 	{
 		kill_all_particles();
-		generate_particles();
 		break;
 	}
 	case '1':
