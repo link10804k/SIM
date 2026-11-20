@@ -3,9 +3,11 @@
 #include <cmath>
 #include <immintrin.h>
 #include <cassert>
+#include "../utils/memory_allocator.h"
 
 Physics_scene::Physics_scene(std::string name) : Scene(name) {
-    particles_struct = std::make_unique<Particles_struct>();
+    //particles_struct = std::make_unique<Particles_struct>();
+    particles_struct = (Particles_struct*)mem_alloc::heap_alloc(sizeof(Particles_struct));
     positions = new float[3 * MAX_PARTICLES];
     colors = new float[4 * MAX_PARTICLES];
 
@@ -15,11 +17,12 @@ Physics_scene::Physics_scene(std::string name) : Scene(name) {
 }
 
 Physics_scene::~Physics_scene() {
+    mem_alloc::heap_free(particles_struct);
     delete[] positions;
     delete[] colors;
 }
 
-#include <iostream>
+//#include <iostream>
 void Physics_scene::update(double dt) {
     scene_update(dt);
 
@@ -77,7 +80,7 @@ void Physics_scene::update(double dt) {
     // Renderizado
     render(count);
 
-    std::cout << "Num Particles: " << num_particles << "\n";
+    //std::cout << "Num Particles: " << num_particles << "\n";
     //std::cout << "Particles: " << num_particles+particles_removed << "\nParticles removed: " << particles_removed << "\nParticles now: " << num_particles << "\n";
 }
 
@@ -185,19 +188,19 @@ void Physics_scene::reset_force_generator(int index) {
 }
 
 void Physics_scene::render(int count) {
-    startRender(GetCamera()->getEye(), GetCamera()->getDir());\
-    glEnable(GL_BLEND);\
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);\
-    glDisable(GL_LIGHTING);\
-    glPointSize(1.0f);\
-    glEnableClientState(GL_VERTEX_ARRAY);\
-    glVertexPointer(3, GL_FLOAT, 0, positions);\
-    glEnableClientState(GL_COLOR_ARRAY);\
-    glColorPointer(4, GL_FLOAT, 0, colors);\
-    glDrawArrays(GL_POINTS, 0, count);\
-    glDisableClientState(GL_COLOR_ARRAY);\
-    glDisableClientState(GL_VERTEX_ARRAY);\
-    glEnable(GL_LIGHTING);\
-    glDisable(GL_BLEND);\
+    startRender(GetCamera()->getEye(), GetCamera()->getDir());
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glDisable(GL_LIGHTING);
+    glPointSize(1.0f);
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 0, positions);
+    glEnableClientState(GL_COLOR_ARRAY);
+    glColorPointer(4, GL_FLOAT, 0, colors);
+    glDrawArrays(GL_POINTS, 0, count);
+    glDisableClientState(GL_COLOR_ARRAY);
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glEnable(GL_LIGHTING);
+    glDisable(GL_BLEND);
     finishRender();
 }

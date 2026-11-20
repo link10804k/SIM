@@ -27,9 +27,10 @@ class Physics_scene : public Scene {
     friend class Fog_particle_generator;
 public:
     // Constantes
-    static constexpr int MAX_PARTICLES = 4096 * 16 * 8;
-    static constexpr int MAX_PARTICLE_SYSTEMS = 10;
-    static constexpr int MAX_FORCE_GENERATORS = 10;
+    static constexpr int MAX_PARTICLES = 4096 * 8;
+    static constexpr int MAX_PARTICLE_SYSTEMS = 512;
+    static constexpr int MAX_FORCE_GENERATORS = 512;
+    static constexpr int MAX_SPRINGS = 1024;
 public:
     Physics_scene(std::string name);
     virtual ~Physics_scene();
@@ -127,8 +128,8 @@ private:
         bool subscribed_force_gens[MAX_PARTICLES][MAX_FORCE_GENERATORS];
 
         Index_stack free_particle_index_stack;
-    };
-    std::unique_ptr<Particles_struct> particles_struct;
+    }; Particles_struct* particles_struct;
+    //std::unique_ptr<Particles_struct> particles_struct;
 
     physx::PxShape* particle_shape = CreateShape(physx::PxSphereGeometry(0.2f));
 
@@ -143,6 +144,11 @@ private:
     int num_force_generators = 0;
     std::unique_ptr<Force_generator> force_generators[MAX_FORCE_GENERATORS];
     bool act_force_gens[MAX_FORCE_GENERATORS];
+
+    // Muelles
+    int num_springs = 0;
+    //std::unique_ptr<>
+    bool act_springs[MAX_SPRINGS];
 
     // Render
     void render(int count);

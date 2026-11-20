@@ -25,6 +25,7 @@
     <ClCompile Include="objects\forces\Explosion_generator.cpp" />
     <ClCompile Include="objects\particle_systems\Stream_particle_system.cpp" />
     <ClCompile Include="objects\particle_systems\Fog_particle_system.cpp" />
+    <ClCompile Include="objects\forces\Spring_force_generator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -56,6 +57,7 @@
     <ClInclude Include="objects\particle_systems\Stream_particle_system.h" />
     <ClInclude Include="objects\particle_systems\Fog_particle_system.h" />
     <ClInclude Include="utils\memory_allocator.h" />
+    <ClInclude Include="objects\forces\Spring_force_generator.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">
